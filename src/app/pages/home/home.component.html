@@ -1,0 +1,163 @@
+<section class="">
+  <div class="main h-[350px] p-8">
+    <div>
+      <form class="max-w-md mx-auto">
+        <label
+          for="default-search"
+          class="mb-2 text-sm font-medium text-gray-900 sr-only"
+          >Search</label
+        >
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            #input
+            type="search"
+            (input)="findcity()"
+            id="default-search"
+            class="block shadow-lg w-full md:w-[610px] relative md:right-40 p-4 ps-10 text-sm text-white border border-gray-300 rounded-2xl bg-gray-900 focus:ring-white focus:border-white"
+            placeholder="Find Your Location"
+            required
+          />
+          <button
+            (click)="findcity()"
+            type="button"
+            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2"
+          >
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="container p-[70px] relative -top-60 right-5 md:left-32">
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-3"
+    >
+      <div
+        class="today-forecast w-72 md:w-80 bg-slate-700 text-white rounded-md"
+      >
+        <div
+          class="forecast-header flex justify-between p-2 font-bold bg-slate-950"
+        >
+          <h6 class="day">
+            {{ getDayName(weatherData.location.localtime) }}
+          </h6>
+          <h6 class="date">
+            {{ getDayDate(weatherData.location.localtime) }}
+          </h6>
+        </div>
+
+        <div class="forecast-content">
+          <h3 class="location my-4 ms-5 font-semibold text-3xl">
+            {{ weatherData.location.name }}
+          </h3>
+
+          <div class="degree flex items-center justify-center py-12">
+            <div class="num text-5xl font-bold">
+              <span>{{ weatherData.current.temp_c }}</span>
+              <sup>o</sup>
+              <span>C</span>
+            </div>
+
+            <div class="forecast-icon">
+              <img [src]="weatherData.current.condition.icon" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="custom ms-8 mb-10 text-blue-400 font-bold text-xl">
+          {{ weatherData.current.condition.text }}
+        </div>
+
+        <div class="flex px-5 gap-2">
+          <span class="md:ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-umberella.png" alt="" />
+
+            20%
+          </span>
+          <span class="ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-wind.png" alt="" />
+
+            18km/h
+          </span>
+          <span class="ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-compass.png" alt="" />
+
+            East
+          </span>
+        </div>
+      </div>
+
+      @for (day of weatherData.forecast.forecastday.slice(1); track $index) {
+      <div
+        class="today-forecast w-72 md:w-80 bg-slate-700 text-white rounded-md"
+      >
+        <div
+          class="forecast-header flex justify-between p-2 font-bold bg-slate-950"
+        >
+          <h6 class="day">{{ getDayName(day.date) }}</h6>
+          <h6 class="date">{{ getDayDate(day.date) }}</h6>
+        </div>
+
+        <div class="forecast-content">
+          <div class="forecast-icon flex justify-center mt-14">
+            <img [src]="day.day.condition.icon" alt="" class="w-16 h-16" />
+          </div>
+
+          <div class="degree flex items-center justify-center">
+            <div class="num text-5xl font-bold">
+              <span>{{ day.day.avgtemp_c }}</span>
+              <sup>o</sup>
+              <span>C</span>
+            </div>
+
+            <div class="forecast-icon">
+              <img [src]="day.day.condition.code" alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div class="custom ms-8 mb-10 mt-14 text-blue-400 font-bold text-xl">
+          {{ day.day.condition.text }}
+        </div>
+
+        <div class="flex px-5 gap-2">
+          <span class="md:ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-umberella.png" alt="" />
+
+            20%
+          </span>
+          <span class="ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-wind.png" alt="" />
+
+            18km/h
+          </span>
+          <span class="ms-6 gap-2 flex pb-4"
+            ><img src="/images/icon-compass.png" alt="" />
+
+            East
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
