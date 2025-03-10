@@ -29,19 +29,36 @@ export class HomeComponent  implements OnInit{
 
 
   weatherData!:Iweather;
+  showWeather(cityOrLatitude: string | number, longitude?: number): void {
+    if (typeof cityOrLatitude === 'string') {
 
-  showWeather(city: string): void {
-    this.weatherService.getWeather(city).subscribe({
-      next: (res) => {
-        console.log(res);
+      this.weatherService.getWeather(cityOrLatitude).subscribe({
+        next: (res: Iweather) => {
+          console.log(res);
+          this.weatherData = res;
+        },
+        error: (err: Error) => {
+          console.error(err.message);
+        }
+      });
+    } else if (typeof cityOrLatitude === 'number' && typeof longitude === 'number') {
 
-        this.weatherData = res;
-      },
-      error: (err) => {
-        console.error(err);
-      }
-    });
+      this.weatherService.getWeatherByCoords(cityOrLatitude, longitude).subscribe({
+        next: (res: Iweather) => {
+          console.log(res);
+          this.weatherData = res;
+        },
+        error: (err: Error) => {
+          console.error(err.message);
+        }
+      });
+    } else {
+      console.error("error");
+    }
   }
+
+
+
 
 
     @ViewChild('input') input!:ElementRef
@@ -50,22 +67,27 @@ export class HomeComponent  implements OnInit{
       const city = this.input.nativeElement.value.trim();
       if (!city) {
 
-        this.showWeather('Cairo');
+        this.showWeather(this.myLatitude, this.myLongitude);
       } else {
         this.showWeather(city);
       }
     }
 
 
-  ngOnInit(): void {
-    this.showWeather('cairo')
+    myLatitude!: number;
+    myLongitude!: number;
 
+    ngOnInit(): void {
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(position);
 
+        this.myLongitude = position.coords.longitude;
+        this.myLatitude = position.coords.latitude;
 
+        this.showWeather(this.myLatitude, this.myLongitude);
+      });
+    }
 
-
-
-  }
 
 
 }

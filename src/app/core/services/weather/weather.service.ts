@@ -14,7 +14,10 @@ export class WeatherService {
 
 
 
-  getWeather(city: string, days: number =3): Observable<any> {
+  getWeatherByCoords(latitude: number, longitude: number, days: number = 3): Observable<any> {
+    return this.httpClient.get<any>(`${this.apiUrl}?key=${this.apiKey}&q=${latitude},${longitude}&days=${days}&aqi=no&alerts=no`);
+  }
+  getWeather(city: string, days: number = 3): Observable<any> {
     return this.httpClient.get<any>(`${this.apiUrl}?key=${this.apiKey}&q=${city}&days=${days}&aqi=no&alerts=no`);
   }
 
